@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            box-shadow: 0 0 10px 10px #f5f5f5;
+            width: 450px;
+            padding: 20px 30px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        label {
+            width: 100px;
+        }
+
+        .form-inline .form-group {
+            margin-bottom: 15px;
+        }
+
+        .btn-info {
+            margin-left: 15px;
+        }
+
+        .btn-primary {
+            width: 80%;
+            margin-left: 10%;
+        }
+    </style>
+</head>
+<body>
+<div class="form-inline form-container">
+    <div class="form-group">
+        <label for="username">用户名</label>
+        <input type="email" class="form-control" id="username">
+    </div>
+    <div class="form-group">
+        <label for="password">密码</label>
+        <input type="password" class="form-control" id="password">
+    </div>
+    <div class="form-group">
+        <label for="email">邮箱</label>
+        <input type="text" class="form-control" id="email">
+        <button class="btn btn-info" id="sendBtn">发送</button>
+    </div>
+    <button class="btn btn-primary">提交</button>
+</div>
+
+<script>
+    function $(selector) {
+        return document.querySelector(selector);
+    }
+
+    const sendBtn = $('#sendBtn'); // 发送按钮
+    const username = $('#username'); // 用户名
+    const password = $('#password'); // 密码
+    const email = $('#email'); // 邮箱
+
+    async function ajax(url, method, data) {
+        const res = await fetch(url, {
+            method: method.toUpperCase(), // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        return res.json();
+    }
+
+    sendBtn.addEventListener('click', function (e) {
+
+        fetch('http://localhost:3000/sendEmail', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email.value
+            })
+        })
+        sendBtn.classList.add('disabled')
+        // ajax('http://localhost:3000/sendEmail', 'post', {
+        //     email: email.value
+        // }).then((res) => {
+        //     sendBtn.setAttribute('disabled', 'true');
+        //     sendBtn.classList.remove('disabled');
+        // }).catch((error) => {
+        //     alert('报错误了' + error.message)
+        // })
+    })
+
+</script>
+</body>
+</html>
